@@ -21,9 +21,24 @@
   </head>
   <body>
     <!-- Slider UI -->
-    <div id="slider-container">
+    <div id="x-slider-container">
       <label for="x-slider">Move Cube X: </label>
-      <input type="range" id="x-slider" min="-5" max="5" step="0.1" value="0" />
+      <input type="range" id="x-slider" min="-360" max="360" step="0.1" value="0" />
+    </div>
+    <!-- Slider UI -->
+    <div id="y-slider-container">
+      <label for="y-slider">Move Cube Y: </label>
+      <input type="range" id="y-slider" min="-5" max="5" step="0.1" value="0" />
+    </div>
+    <!-- Slider UI -->
+    <div id="z-slider-container">
+      <label for="z-slider">Move Cube Z: </label>
+      <input type="range" id="z-slider" min="-5" max="5" step="0.1" value="0" />
+    </div>
+
+    <div id="x-input-container">
+      <label for="x-input">Move Cube X: </label>
+      <input type="text" id="x-input" value="0" />
     </div>
 
     <script>
@@ -69,15 +84,32 @@
 
       // Get slider element and add event listener
       const xSlider = document.getElementById("x-slider");
+      const xInput = document.getElementById("x-input");
       xSlider.addEventListener("input", (event) => {
-        cube.position.x = parseFloat(event.target.value);
+        const degrees = parseFloat(event.target.value);
+        cube.rotation.x = degrees * Math.PI / 180;
+        xInput.value = degrees;
       });
+      xInput.addEventListener("input", (event) => {
+        const degrees = parseFloat(event.target.value);
+        cube.rotation.x = degrees * Math.PI / 180;
+        xSlider.value = degrees;
+      });
+
+      // Get slider element and add event listener
+      const ySlider = document.getElementById("y-slider");
+      ySlider.addEventListener("input", (event) => {
+        cube.rotation.y = parseFloat(event.target.value);
+      });
+
+      const zSlider = document.getElementById("z-slider");
+      zSlider.addEventListener("input", (event) => {
+        cube.rotation.z = parseFloat(event.target.value);
+      })
 
       // Animation loop
       function animate() {
         requestAnimationFrame(animate);
-        cube.rotation.x += 0.01;
-        cube.rotation.y += 0.01;
         controls.update(); // Update camera controls
         renderer.render(scene, camera);
       }
